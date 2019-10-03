@@ -54,8 +54,3 @@ If you are using **i3wm**, you can add this line to your config:
 ```
 exec --no-startup-id sh -c "path/to/wallblur.sh &"
 ```
-
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
