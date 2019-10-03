@@ -3,10 +3,6 @@
 # To get the current wallpaper
 source ~/.cache/wal/colors.sh
 
-#!/bin/zsh
-
-# To get the current wallpaper
-
 curr_user=$(whoami)
 
 curr_wallpaper="$wallpaper"
