@@ -33,7 +33,7 @@ do_blur () {
 	for i in $(seq 5)
 	do
 		blurred_wallaper=""$cache_dir"/"$filename""$i"."$extension""
-		feh --bg-fill "$blurred_wallaper" 
+		gsettings set org.gnome.desktop.background picture-uri "$blurred_wallaper"
     done
 }
 
@@ -41,7 +41,7 @@ do_unblur () {
 	for i in $(seq 5 -1 0)
 	do
 		blurred_wallaper=""$cache_dir"/"$filename""$i"."$extension""
-		feh --bg-fill "$blurred_wallaper" 
+		gsettings set org.gnome.desktop.background picture-uri "$blurred_wallaper"
     done
 }
 
