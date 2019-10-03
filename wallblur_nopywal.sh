@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 # To get the current wallpaper
 
