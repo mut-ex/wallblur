@@ -42,9 +42,9 @@ gen_blurred_seq () {
 	for i in $(seq 0 1 5)
 	do
 		blurred_wallpaper=""$cache_dir"/"$filename""$i"."$extension""
-  		convert -blur 0x$i $last_wallpaper_cache $blurred_wallpaper
-        echo " > Generating... $(basename $blurred_wallpaper)"
-    done
+		convert -blur 0x$i $last_wallpaper_cache $blurred_wallpaper
+		echo " > Generating... $(basename $blurred_wallpaper)"
+	done
 }
 
 
@@ -54,7 +54,7 @@ do_blur () {
 		blurred_wallpaper=""$cache_dir"/"$filename""$i"."$extension""
 		gsettings set org.gnome.desktop.background picture-uri file:///"$blurred_wallpaper"
 
-    done
+	done
 }
 
 do_unblur () {
@@ -63,7 +63,7 @@ do_unblur () {
 		blurred_wallpaper=""$cache_dir"/"$filename""$i"."$extension""
 		gsettings set org.gnome.desktop.background picture-uri file:///"$blurred_wallpaper"
 
-    done
+	done
 }
 
 
@@ -105,21 +105,20 @@ while :; do
 	num_windows="$(echo "$(wmctrl -l)" | awk -F" " '{print $2}' | grep ^$current_workspace)"
 
 	### Blur/Unblur
-	if [ -n "$num_windows" ]
-	    then
-	        if [ "$prev_state" != "blurred" ]; then
-            	echo " ! Blurring"
-                do_blur
-                wallpaper_set_by_this=true
-        		prev_state="blurred"
-	        fi
-	    else
-	        if [ "$prev_state" != "unblurred" ]; then
-            	echo " ! Un-blurring"
-                do_unblur
-                wallpaper_set_by_this=true
-        		prev_state="unblurred"
-	        fi
+	if [ -n "$num_windows" ]; then
+		if [ "$prev_state" != "blurred" ]; then
+			echo " ! Blurring"
+			do_blur
+			wallpaper_set_by_this=true
+			prev_state="blurred"
+		fi
+	else
+		if [ "$prev_state" != "unblurred" ]; then
+			echo " ! Un-blurring"
+			do_unblur
+			wallpaper_set_by_this=true
+			prev_state="unblurred"
+		fi
 	fi
 
 	sleep 0.3
