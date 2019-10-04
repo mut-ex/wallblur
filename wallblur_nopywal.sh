@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # To get the current wallpaper
-curr_wallpaper="$HOME/Pictures/Wallpapers/samuraijack.jpg"
-cache_dir="$HOME/.cache/wallblur"
+curr_wallpaper=$1
 
+cache_dir="$HOME/.cache/wallblur"
 basefilename=$(basename -- "$curr_wallpaper")
 extension="${basefilename##*.}"
 filename="${basefilename%.*}"
