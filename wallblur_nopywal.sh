@@ -1,13 +1,9 @@
 #!/bin/bash
 
 # To get the current wallpaper
-
-curr_user=$(whoami)
-
 curr_wallpaper=$1
 
-cache_dir="/home/"$curr_user"/.cache/wallblur"
-
+cache_dir="$HOME/.cache/wallblur"
 basefilename=$(basename -- "$curr_wallpaper")
 extension="${basefilename##*.}"
 filename="${basefilename%.*}"

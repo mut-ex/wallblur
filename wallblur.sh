@@ -2,12 +2,8 @@
 
 # To get the current wallpaper
 source ~/.cache/wal/colors.sh
-
-curr_user=$(whoami)
-
 curr_wallpaper="$wallpaper"
-
-cache_dir="/home/"$curr_user"/.cache/wallblur"
+cache_dir="$HOME/.cache/wallblur"
 
 basefilename=$(basename -- "$curr_wallpaper")
 extension="${basefilename##*.}"
