@@ -24,8 +24,8 @@ wallpaper_set_by_this=false
 settle_new_wallpaper() {
 	### Remove old cache dir and recreate it
 	if [  "$(ls -A "$cache_dir")" ]; then
-			echo " * Cleaning existing cache..."
-			rm -r "$cache_dir"/*
+		echo " * Cleaning existing cache..."
+		rm -r "$cache_dir"/*
 	fi
 	mkdir -p $cache_dir
 
@@ -39,8 +39,7 @@ gen_blurred_seq () {
 	#notify-send "Generating blured wallpaper: "$basefilename"..."
 
 	### Generate incrementally blurred images
-	for i in $(seq 0 1 5)
-	do
+	for i in $(seq 0 1 5); do
 		blurred_wallpaper=""$cache_dir"/"$filename""$i"."$extension""
 		convert -blur 0x$i $last_wallpaper_cache $blurred_wallpaper
 		echo " > Generating... $(basename $blurred_wallpaper)"
@@ -49,8 +48,7 @@ gen_blurred_seq () {
 
 
 do_blur () {
-	for i in $(seq 5)
-	do
+	for i in $(seq 5); do
 		blurred_wallpaper=""$cache_dir"/"$filename""$i"."$extension""
 		gsettings set org.gnome.desktop.background picture-uri file:///"$blurred_wallpaper"
 
@@ -58,8 +56,7 @@ do_blur () {
 }
 
 do_unblur () {
-	for i in $(seq 5 -1 0)
-	do
+	for i in $(seq 5 -1 0); do
 		blurred_wallpaper=""$cache_dir"/"$filename""$i"."$extension""
 		gsettings set org.gnome.desktop.background picture-uri file:///"$blurred_wallpaper"
 
