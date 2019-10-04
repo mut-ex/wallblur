@@ -22,10 +22,11 @@ If you are a pywal user, you might want to use the "wallblur.sh" script. It will
 
 ### non-pywal Users
 
-If you do not use pywal, you need to use the "wallblur_nopywal.sh" script. To configure it for your current wallpaper, change the ***Pictures/Wallpapers/samuraijack.jpg*** part in the following line to your current wallpaper.
+If you do not use pywal, you need to use the "wallblur_nopywal.sh" script.  
+Specify your current wallpaper as an input argument like so:  
 
 ```
-curr_wallpaper="/home/"$curr_user"/Pictures/Wallpapers/samuraijack.jpg"
+path/to/wallblur_nopywal.sh ~/wallpapers/mywallpaper.jpg &
 ```
 
 ### Note
