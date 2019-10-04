@@ -4,7 +4,7 @@
 
 curr_user=$(whoami)
 
-curr_wallpaper="/home/"$curr_user"/Pictures/Wallpapers/samuraijack.jpg"
+curr_wallpaper=$1
 
 cache_dir="/home/"$curr_user"/.cache/wallblur"
 
