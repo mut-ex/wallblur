@@ -35,6 +35,24 @@ settle_new_wallpaper() {
 	cp "$gnome_wallpaper_cache/$last_wallpaper" $last_wallpaper_cache
 }
 
+### usage: isMinimized <windowId>
+### returns status 0 if and only if window with given id is minimized
+is_minimized() {
+	xprop -id "$1" | grep -Fq 'window state: Iconic'
+}
+
+### (uses is_minimized)
+number_of_unminimized_windows_in_current_workspace() {
+	count=0
+	### The wmctrl command returns unminimized windows, ignoring sticky
+	### because the DE has some sticky by default.
+	### For reference, $(wmctrl -l | cut -f1 -d' ') includes sticky
+	for id in $(wmctrl -l | grep -vE '^0x\w* -1' | cut -f1 -d' '); do
+		is_minimized "$id" || ((count++))
+	done
+	return $count
+}
+
 gen_blurred_seq () {
 	### Send a notification
 	#notify-send "Generating blured wallpaper: "$basefilename"..."
@@ -82,8 +100,8 @@ while :; do
 	
 	### Check if the wallpaper changed by this script
 	if [ "$wallpaper_set_by_this" = true ]; then
-		last_wallpaper=$curr_wallpaper
 		wallpaper_set_by_this=false
+		last_wallpaper=$curr_wallpaper
 	fi
 
 	### Check if the wallpaper has changed
@@ -97,20 +115,17 @@ while :; do
 		prev_state="" # Reset
 	fi
 
-	### Find current workspace
-	current_workspace="$(xprop -root _NET_CURRENT_DESKTOP | awk '{print $3}')"
-	
-	### Find number of windows in said workspace
-	### TODO: See if there is a way to get only un-minimized windows
-	num_windows="$(echo "$(wmctrl -l)" | awk -F" " '{print $2}' | grep ^$current_workspace)"
+	### Find if there are unminimized windows
+	number_of_unminimized_windows_in_current_workspace
+	num_windows=$?
 
 	### Blur/Unblur
-	if [ -n "$num_windows" ]; then
-		if [ "$prev_state" != "blurred" ]; then
-			echo " ! Blurring"
-			do_blur
+	if [ "$num_windows" = "0" ]; then
+		if [ "$prev_state" != "unblurred" ]; then
+			echo " ! Un-blurring"
+			do_unblur
 			wallpaper_set_by_this=true
-			prev_state="blurred"
+			prev_state="unblurred"
 			if [ "$new_wallpaper" = true ]; then
 				pkill notify-osd # Clear old notification
 				notify-send "wallblur: Wallpaper processed, you can now change wallpaper again without issues"
@@ -118,11 +133,11 @@ while :; do
 			fi
 		fi
 	else
-		if [ "$prev_state" != "unblurred" ]; then
-			echo " ! Un-blurring"
-			do_unblur
+		if [ "$prev_state" != "blurred" ]; then
+			echo " ! Blurring"
+			do_blur
 			wallpaper_set_by_this=true
-			prev_state="unblurred"
+			prev_state="blurred"
 			if [ "$new_wallpaper" = true ]; then
 				pkill notify-osd # Clear old notification
 				notify-send "wallblur: Wallpaper processed, you can now change wallpaper again without issues"
