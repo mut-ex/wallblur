@@ -16,6 +16,7 @@ filename="${basefilename%.*}"
 last_wallpaper=""
 prev_state=""
 wallpaper_set_by_this=false
+new_wallpaper=false
 
 
 ### ---- Helper functions ----
@@ -88,6 +89,8 @@ while :; do
 	### Check if the wallpaper has changed
 	if [ ! "$curr_wallpaper" = "$last_wallpaper" ]; then
 		echo "* The wallpaper changed"
+		new_wallpaper=true
+		notify-send "wallblur: Processing new wallpaper... Please don't set a new one until this is finished"
 		last_wallpaper=$curr_wallpaper
 		settle_new_wallpaper
 		gen_blurred_seq
@@ -108,6 +111,11 @@ while :; do
 			do_blur
 			wallpaper_set_by_this=true
 			prev_state="blurred"
+			if [ "$new_wallpaper" = true ]; then
+				pkill notify-osd # Clear old notification
+				notify-send "wallblur: Wallpaper processed, you can now change wallpaper again without issues"
+				new_wallpaper=false
+			fi
 		fi
 	else
 		if [ "$prev_state" != "unblurred" ]; then
@@ -115,6 +123,11 @@ while :; do
 			do_unblur
 			wallpaper_set_by_this=true
 			prev_state="unblurred"
+			if [ "$new_wallpaper" = true ]; then
+				pkill notify-osd # Clear old notification
+				notify-send "wallblur: Wallpaper processed, you can now change wallpaper again without issues"
+				new_wallpaper=false
+			fi
 		fi
 	fi
 
