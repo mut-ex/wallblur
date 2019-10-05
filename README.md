@@ -16,18 +16,29 @@ If not, you can do so by executing:
 sudo apt install imagemagick wmctrl feh
 ```
 
-### pywal Users
+### pywal users
 
-If you are a pywal user, you might want to use the "wallblur.sh" script. It will automatically read your current wallpaper from the pywal cache.
+If you are a pywal user, you would probably want to use the "wallblur.sh" script. It will automatically read your current wallpaper from the pywal cache.
 
-### non-pywal Users
+It will also detect when you change your wallpaper, and update its cache accordingly.
 
-If you do not use pywal, you need to use the "wallblur_nopywal.sh" script.  
+Moreover, it will also resize your wallpaper while mantaining aspect ratio so that it fits your display's resolution. Don't worry, it will not modify the original file.
+
+### non-pywal users
+
+If you do not use pywal, you will need to use the "wallblur_nopywal.sh" script.
+
 Specify your current wallpaper as an input argument like so:  
 
 ```
-path/to/wallblur_nopywal.sh ~/wallpapers/mywallpaper.jpg &
+path/to/wallblur_nopywal.sh -i ~/wallpapers/mywallpaper.jpg &
 ```
+
+Similar to the pywal version, the script will automatically resize your wallpaper while mantaining aspect ratio so that it fits your display's resolution. Don't worry, it will not modify the original file.
+
+### users on gnome or cinnamon desktop environments
+
+If you fit under this category, you will need to use the "wallblur_gnome_cinnamon.sh" script.
 
 ### Note
 
@@ -36,13 +47,28 @@ Make sure that you stop any existing application that is responsible for setting
 
 ## Running wallblur
 
+### the manual way
+
 You can run wallblur by running the following command:
 
 ```
 path/to/wallblur.sh &
 ```
 
-If you would like to start wallblur on startup automatically, assuming you are on an X11 windowing system, add the following line to your **.xprofile** file:
+If you are copying and pasting the script instead of downloading the script. Make sure you make it executable by using the following command:
+
+```
+chmod +x path/to/wallblur.sh
+```
+
+Of course, replacing **wallblur.sh** with the name of the script. 
+
+### automatically start wallblur on startup
+
+If you are using **cinnamon or gnome**, add ```path/to/_gnome_cinnamon.sh &``` as a custom command in your "Startup Applications" instead of ```.xprofile```. Make sure to provide the actual full path, without $HOME or ~.
+
+
+Otherwise, if you would like to start wallblur on startup automatically, assuming you are on an X11 windowing system, add the following line to your **.xprofile** file:
 
 ```
 path/to/wallblur.sh &
@@ -50,9 +76,7 @@ path/to/wallblur.sh &
 
 Replacing ***path/to/*** with the actual path where the script is residing.
 
-If you are using **cinnamon or gnome**, add ```path/to/wallblur.sh &``` as a custom command in your "Startup Applications" instead of ```.xprofile```. Make sure to provide the actual full path, without $HOME or ~.
-
-If you are using **i3wm**, you can add this line to your config:
+And if you are using **i3wm**, you can add this line to your config:
 
 ```
 exec --no-startup-id sh -c "path/to/wallblur.sh &"
