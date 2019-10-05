@@ -50,6 +50,8 @@ path/to/wallblur.sh &
 
 Replacing ***path/to/*** with the actual path where the script is residing.
 
+If you are using **cinnamon or gnome**, add ```path/to/wallblur.sh &``` as a custom command in your "Startup Applications" instead of ```.xprofile```. Make sure to provide the actual full path, without $HOME or ~.
+
 If you are using **i3wm**, you can add this line to your config:
 
 ```
