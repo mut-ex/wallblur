@@ -19,8 +19,9 @@ last_wallpaper_file_path=$cache_dir/last_wallpaper_path
 
 ### Current wallpaper info (also populated by settle_new_wallpaper)
 last_wallpaper_path=""
-if [ -f last_wallpaper_file_path ]; then
+if [ -f "$last_wallpaper_file_path" ]; then
 	last_wallpaper_path=$(<$last_wallpaper_file_path)
+	echo Found old wallpaper $last_wallpaper_path
 fi
 basefilename=$(basename -- "$last_wallpaper_path")
 extension="${basefilename##*.}"
@@ -28,7 +29,6 @@ filename="${basefilename%.*}"
 
 ### Will be populated/changed after the first loop iteration
 prev_state="" # This shouldn't be neither blurred nor unblurred
-new_wallpaper=false
 
 
 ### ---- Helper functions ----
@@ -116,32 +116,9 @@ while :; do
 	curr_wallpaper_path="$(gsettings get $package picture-uri)"
 	curr_wallpaper_path=$(echo -n "$curr_wallpaper_path" | tail -c +9 | head -c -1) # Remove file:// and quotes
 
-	# ### If it's the first time the script runs 
-	# ### and the current wallpaper was set by this script
-	# ### Then avoid the resetting it again for performance reasons
-	# if [first_time = true ] && [ "$curr_wallpaper_path" = file://$cache_dir/* ]; then
-	# 	last_wallpaper=file://$last_wallpaper_cached
-	# fi
-	# first_time=false
-
-	# ### If the execution gets inside this if, it means that 
-	# ### It's the first time it runs and
-	# ### the current wallpaper was set by this script (so the blurred versions have been generated) 
-	# ### but a blurred version incorrectly remained as the wallpaper (forced shutdown or similar)
-	# if [ first_time = true ]; then
-	# 	if [ "$curr_wallpaper_path" = file://$cache_dir/* ]; then
-	# 		curr_wallpaper_path=$last_wallpaper_cached # Don't keep the blurred version
-	# 	fi
-	# fi
-
-	### Check if the wallpaper has changed (-> the uri is outside our cache_dir)
-	# echo 1. $curr_wallpaper_path
-	# echo 2. $new_wallpaper
-	# echo 3. $cache_dir
-	if [[ ! "$curr_wallpaper_path" == "$cache_dir/"* ]] && [ $new_wallpaper = false ]; then
+	### Check if the wallpaper has actually changed (-> the uri is outside our cache_dir)
+	if [ ! "$curr_wallpaper_path" = "$last_wallpaper_path" ] && [[ ! "$curr_wallpaper_path" == "$cache_dir/"* ]]; then
 		echo "* The wallpaper changed"
-		new_wallpaper=true
-		#notify-send -t 3 "wallblur: Processing new wallpaper... Please don't set a new one until this is finished"
 		last_wallpaper_path=$curr_wallpaper_path
 		settle_new_wallpaper
 		gen_blurred_seq
@@ -159,22 +136,12 @@ while :; do
 			echo " ! Un-blurring"
 			do_unblur
 			prev_state="unblurred"
-			if [ "$new_wallpaper" = true ]; then
-				pkill notify-osd # Clear old notification
-				#notify-send -t 3 "wallblur: Wallpaper processed, you can now change wallpaper again without issues"
-				new_wallpaper=false
-			fi
 		fi
 	else
 		if [ "$prev_state" != "blurred" ]; then
 			echo " ! Blurring"
 			do_blur
 			prev_state="blurred"
-			if [ "$new_wallpaper" = true ]; then
-				pkill notify-osd # Clear old notification
-				#notify-send -t 3 "wallblur: Wallpaper processed, you can now change wallpaper again without issues"
-				new_wallpaper=false
-			fi
 		fi
 	fi
 
