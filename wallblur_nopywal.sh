@@ -59,26 +59,6 @@ do_unblur () {
 	done
 }
 
-check_wallpaper_changed() {
-	source ~/.cache/wal/colors.sh
-	pywal_wallpaper=${wallpaper##*/}
-
-
-	if [ "$pywal_wallpaper" != "$base_filename" ]
-	then
-		err " Wallpaper changed. Going to update cache"
-
-		wallpaper="$wallpaper"
-		base_filename=${wallpaper##*/}
-		extension="${base_filename##*.}"
-		filename="${base_filename%.*}"
-
-		gen_blurred_seq
-
-		prev_state="reset"
-	fi
-}
-
 clean_cache() {
 	if [  "$(ls -A "$cache_dir")" ]; then
 		err " * Cleaning existing cache"
@@ -137,8 +117,6 @@ while :; do
 
 	current_workspace="$(xprop -root _NET_CURRENT_DESKTOP | awk '{print $3}')"
 	num_windows="$(echo "$(wmctrl -l)" | awk -F" " '{print $2}' | grep ^$current_workspace)"
-
-	#check_wallpaper_changed
 
 	# If there are active windows
 	if [ -n "$num_windows" ]
