@@ -24,7 +24,7 @@ gen_blurred_seq () {
 	if [ "$wallpaper_resolution" != "$display_resolution" ]; then
 		
 		err "Scaling wallpaper to match resolution"
-		convert $wallpaper -resize $display_resolution -gravity center -extent $display_resolution "$cache_dir"/"$filename"0."$extension"
+		convert $wallpaper -resize $display_resolution "$cache_dir"/"$filename"0."$extension"
 		wallpaper="$cache_dir"/"$filename"0."$extension"
 	fi
 

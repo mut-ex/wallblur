@@ -29,7 +29,7 @@ gen_blurred_seq () {
 	then
 		
 		err "Scaling wallpaper to match resolution"
-		convert $wallpaper -resize $display_resolution -gravity center -extent $display_resolution "$cache_dir"/"$filename"0."$extension"
+		convert $wallpaper -resize $display_resolution "$cache_dir"/"$filename"0."$extension"
 		wallpaper="$cache_dir"/"$filename"0."$extension"
 	    	#echo "New wallpaper"
 	    fi
