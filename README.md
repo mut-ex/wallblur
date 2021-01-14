@@ -2,6 +2,12 @@
 
 wallblur is a simple shell script that creates a faux blurred background effect for your linux desktop without needing a compositor.
 
+<p align="center">
+If you would like to show your appreciation for this project,<br>please consider a donation :)<br><br>
+<a href="https://www.paypal.com/donate/?business=Y4Y75KP2JBNJW&currency_code=USD">
+<img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" alt="PayPal donation link"/></a>
+<p>
+
 ![demo](https://github.com/turing753/wallblur/blob/master/demo.gif)
 
 ## Getting Started
